@@ -15,8 +15,8 @@ public class App
         System.out.println(String.join(" ",args));
         FileInputStream fis = new FileInputStream(args[0]);
         System.out.println("doing a read...");
-        NetflowV5Header2 header = new NetflowV5Header2();
-        NetflowV5Packet2 packet = new NetflowV5Packet2();
+        NetflowV5Header header = new NetflowV5Header();
+        NetflowV5Packet packet = new NetflowV5Packet();
         while (fis.available() > 0) {
             header.read(fis);
             System.out.println(header);

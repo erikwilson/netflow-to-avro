@@ -4,11 +4,7 @@ import java.nio.ByteBuffer;
 
 public class UnsignedByteBuffer {
 
-    enum Types {
-        UINT8, UINT16, UINT32;
-    }
-
-    ByteBuffer byteBuffer;
+    private ByteBuffer byteBuffer;
 
     public UnsignedByteBuffer(ByteBuffer byteBuffer) {
         this.byteBuffer = byteBuffer;

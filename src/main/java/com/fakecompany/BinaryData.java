@@ -85,7 +85,7 @@ public class BinaryData {
     {
         return name + ":" + packetData.entrySet().stream().collect(Collector.of(
             () -> new ArrayList<String>(),
-            (result,entry) -> {
+            (result, entry) -> {
                 String key = entry.getKey();
                 Object value = entry.getValue();
                 Serializer serial = serializers.get(key);

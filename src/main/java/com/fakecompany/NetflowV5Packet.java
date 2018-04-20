@@ -4,9 +4,9 @@ import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class NetflowV5Packet2 extends BinaryData {
+public class NetflowV5Packet extends BinaryData {
 
-    public NetflowV5Packet2() {
+    public NetflowV5Packet() {
         super(48, new ArrayList<>(Arrays.asList(
             Map.entry("srcaddr", DataTypes.UINT32),    // 0-3
             Map.entry("dstaddr", DataTypes.UINT32),    // 4-7

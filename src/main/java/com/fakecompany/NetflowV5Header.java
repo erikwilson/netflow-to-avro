@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
-public class NetflowV5Header2 extends BinaryData {
+public class NetflowV5Header extends BinaryData {
 
-    public NetflowV5Header2() {
+    public NetflowV5Header() {
         super(24, new ArrayList<>(Arrays.asList(
             Map.entry("version", DataTypes.UINT16),          // 0-1
             Map.entry("count", DataTypes.UINT16),            // 2-3
