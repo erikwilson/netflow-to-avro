@@ -1,0 +1,9 @@
+{
+    "namespace": "com.fakecompany.adjacencylist",
+    "name": "AdjacencyList",
+    "type": "record",
+    "fields": [
+        {"name": "addr", "type": "long"},
+        {"name": "neighbors", "type": {"type": "array", "items": "long"}}
+    ]
+}

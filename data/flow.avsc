@@ -1,0 +1,23 @@
+{
+    "namespace": "com.fakecompany.flow",
+    "name": "Flow",
+    "type": "record",
+    "fields": [
+        {"name": "timestamp", "type": "long"},
+        {"name": "agent", "type": "long"},
+        {"name": "protocol", "type": "int"},
+        {"name": "srcAddr", "type": "long"},
+        {"name": "srcAS", "type": "int"},
+        {"name": "srcPort", "type": "int"},
+        {"name": "srcMask", "type": "int"},
+        {"name": "dstAddr", "type": "long"},
+        {"name": "dstAS", "type": "int"},
+        {"name": "dstPort", "type": "int"},
+        {"name": "dstMask", "type": "int"},
+        {"name": "inputIface", "type": "int"},
+        {"name": "outputIface", "type": "int"},
+        {"name": "octets", "type": "long"},
+        {"name": "packets", "type": "long"},
+        {"name": "tcpFlags", "type": "int"}
+    ]
+}
