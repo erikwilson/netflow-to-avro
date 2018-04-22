@@ -1,0 +1,34 @@
+
+ {
+    "namespace":"com.fakecompany.combineddata",
+    "type":"record",
+ 	"name" : "CombinedData",
+ 	"fields" : [
+ 		{
+ 		    "name":"metrics",
+ 		    "type": {
+                "namespace": "com.fakecompany.metrics",
+                "name": "Metrics",
+                "type": "record",
+                "fields": [
+                    {"name": "addr", "type": "long"},
+                    {"name": "octets", "type": "long"},
+                    {"name": "packets", "type": "long"},
+                    {"name": "tcpFlags", "type": {"type": "map", "values": "long"}}
+                ]
+            }
+        },
+ 		{
+ 		    "name":"adjacency",
+ 		    "type": {
+                 "namespace": "com.fakecompany.adjacencylist",
+                 "name": "AdjacencyList",
+                 "type": "record",
+                 "fields": [
+                     {"name": "addr", "type": "long"},
+                     {"name": "neighbors", "type": {"type": "array", "items": "long"}}
+                 ]
+            }
+        }
+ 	]
+ }

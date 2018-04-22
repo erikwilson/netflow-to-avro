@@ -1,6 +1,5 @@
-package com.fakecompany;
+package com.company;
 
-import java.io.Externalizable;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.stream.Collector;
@@ -15,7 +14,7 @@ public class BinaryData {
     String name;
 
     public interface Serializer {
-        public String toString(Object a);
+        String toString(Object a);
     }
 
     public BinaryData(int entryLength, List<Map.Entry<String,DataTypes>> entryList) {
@@ -58,7 +57,7 @@ public class BinaryData {
 
     public void parse(byte[] data)
     {
-        UnsignedByteBuffer reader = new UnsignedByteBuffer(ByteBuffer.wrap(data));
+        UnsignedDataReader reader = new UnsignedDataReader(ByteBuffer.wrap(data));
         packetData = entryList.stream().collect(Collectors.toMap(
             entry -> entry.getKey(),
             entry -> {
@@ -84,11 +83,11 @@ public class BinaryData {
     public String toString()
     {
         return name + ":" + packetData.entrySet().stream().collect(Collector.of(
-            () -> new ArrayList<String>(),
+            ArrayList<String>::new,
             (result, entry) -> {
                 String key = entry.getKey();
                 Object value = entry.getValue();
-                Serializer serial = serializers.get(key);
+                Serializer serial = serializers != null ? serializers.get(key) : null;
                 if (serial != null) {
                     result.add(serial.toString(value));
                 }
