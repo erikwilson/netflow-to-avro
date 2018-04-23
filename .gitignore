@@ -26,3 +26,5 @@ target
 output
 
 *.json
+
+src/main/java/com/fakecompany
