@@ -1,4 +1,4 @@
-package com.company;
+package com.company.util;
 
 public class Util {
     public static String addressToString(long address) {

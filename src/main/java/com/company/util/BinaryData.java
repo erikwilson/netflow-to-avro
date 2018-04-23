@@ -1,4 +1,4 @@
-package com.company;
+package com.company.util;
 
 import java.nio.ByteBuffer;
 import java.util.*;
@@ -7,11 +7,14 @@ import java.util.stream.Collectors;
 
 public class BinaryData {
 
-    List<Map.Entry<String,DataTypes>> entryList;
-    Map<String,Object> packetData;
-    Map<String,Serializer> serializers;
-    int entryLength;
-    String name;
+    private String name;
+
+    protected Map<String,Object> packetData;
+    protected List<Map.Entry<String,DataTypes>> entryList;
+    protected Map<String,Serializer> serializers;
+    protected byte[] data;
+
+    public int entryLength;
 
     public interface Serializer {
         String toString(Object a);
@@ -42,12 +45,12 @@ public class BinaryData {
         if (calculatedSize != entryLength) {
             throw new Error("expected binary entry length " + entryLength + " does not match calculated size " + calculatedSize);
         }
+        data = new byte[entryLength];
     }
 
     public void read(java.io.InputStream stream)
             throws java.io.IOException
     {
-        byte[] data = new byte[entryLength];
         int bytesRead = stream.readNBytes(data,0, data.length);
         if (bytesRead != data.length) {
             throw new java.io.IOException("read " + bytesRead + "/" + data.length + " bytes");
@@ -59,7 +62,7 @@ public class BinaryData {
     {
         UnsignedDataReader reader = new UnsignedDataReader(ByteBuffer.wrap(data));
         packetData = entryList.stream().collect(Collectors.toMap(
-            entry -> entry.getKey(),
+            Map.Entry::getKey,
             entry -> {
                 Object entryData = null;
                 switch(entry.getValue()) {
@@ -76,9 +79,8 @@ public class BinaryData {
             LinkedHashMap::new));
     }
 
-    public Object get(String key) {
-        return packetData.get(key);
-    }
+    // evil
+    public <T> T get(String key) { return (T)packetData.get(key); }
 
     public String toString()
     {

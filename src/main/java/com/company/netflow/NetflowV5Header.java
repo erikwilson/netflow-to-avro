@@ -1,4 +1,7 @@
-package com.company;
+package com.company.netflow;
+
+import com.company.util.BinaryData;
+import com.company.util.DataTypes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,5 +21,13 @@ public class NetflowV5Header extends BinaryData {
             Map.entry("engineId", DataTypes.UINT8),          // 21
             Map.entry("samplingInterval", DataTypes.UINT16)  // 22-23
         )));
+    }
+
+    @Override
+    public void parse(byte[] data)
+    {
+        super.parse(data);
+        int version = get("version");
+        if (version != 5) throw new Error("invalid header version: " + version);
     }
 }

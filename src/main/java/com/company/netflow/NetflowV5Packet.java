@@ -1,11 +1,12 @@
-package com.company;
+package com.company.netflow;
 
+import com.company.util.BinaryData;
+import com.company.util.DataTypes;
+import com.company.util.Util;
 import com.fakecompany.flow.Flow;
 import org.apache.avro.Schema;
 
-import java.nio.ByteBuffer;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class NetflowV5Packet extends BinaryData {
 

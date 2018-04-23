@@ -1,4 +1,4 @@
-package com.company;
+package com.company.netflow.hadoop;
 
 import com.fakecompany.flow.Flow;
 import com.fakecompany.metrics.Metrics;
@@ -16,20 +16,18 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.*;
 
-public class CombinedRunner extends Configured implements Tool {
+public class NetflowV5ToAvroCombinedRunner extends Configured implements Tool {
 
-    final private static Logger logger = LoggerFactory.getLogger(CombinedRunner.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(NetflowV5ToAvroCombinedRunner.class);
 
-    public static class CombinedMapper extends AvroMapper<Flow, Pair<Long,CombinedData>> {
+    public static class Mapper extends AvroMapper<Flow, Pair<Long,CombinedData>> {
 
-        private void collect(AvroCollector<Pair<Long,CombinedData>> collector,
-                             Metrics metrics, Long srcAddr, Long dstAddr ) throws IOException
-        {
-            metrics.setAddr(srcAddr);
-            AdjacencyList adjacencyList = new AdjacencyList(srcAddr,new LinkedList<>(){{add(dstAddr);}});
-            CombinedData result = new CombinedData(metrics,adjacencyList);
-            collector.collect(new Pair<>(srcAddr, result));
+        private AvroMultipleOutputs amos;
+
+        public void configure(JobConf conf) {
+            amos = new AvroMultipleOutputs(conf);
         }
+        public void close() throws IOException { amos.close(); }
 
         @Override
         public void map(Flow flow, AvroCollector<Pair<Long,CombinedData>> collector,
@@ -42,13 +40,23 @@ public class CombinedRunner extends Configured implements Tool {
             long srcAddr = flow.getSrcAddr();
             long dstAddr = flow.getDstAddr();
 
+            amos.collect("flow", reporter, Flow.getClassSchema(), flow);
             collect(collector, metrics, srcAddr, dstAddr);
             collect(collector, metrics, dstAddr, srcAddr);
         }
 
+        private void collect(AvroCollector<Pair<Long,CombinedData>> collector,
+                             Metrics metrics, Long srcAddr, Long dstAddr ) throws IOException
+        {
+            metrics.setAddr(srcAddr);
+            AdjacencyList adjacencyList = new AdjacencyList(srcAddr,new LinkedList<>(){{add(dstAddr);}});
+            CombinedData result = new CombinedData(metrics,adjacencyList);
+            collector.collect(new Pair<>(srcAddr, result));
+        }
+
     }
 
-    public static class CombinedReducer extends AvroReducer<Long, CombinedData, Pair<Long,CombinedData>> {
+    public static class Reducer extends AvroReducer<Long, CombinedData, Pair<Long,CombinedData>> {
 
         private AvroMultipleOutputs amos;
 
@@ -69,9 +77,12 @@ public class CombinedRunner extends Configured implements Tool {
             AdjacencyList adjacencyList = new AdjacencyList(addr,neighbors);
 
             for (CombinedData data : allData) {
+
                 Metrics metric = data.getMetrics();
+
                 allMetrics.setOctets( allMetrics.getOctets() + metric.getOctets() );
                 allMetrics.setPackets( allMetrics.getPackets() + metric.getPackets() );
+
                 metric.getTcpFlags().forEach((k,v)->{
                     Long currentValue = tcpFlags.getOrDefault(k,0L);
                     tcpFlags.put(k, currentValue + v);
@@ -81,32 +92,31 @@ public class CombinedRunner extends Configured implements Tool {
                    if (!neighbors.contains(n)) neighbors.add(n);
                });
             }
-            if (logger.isDebugEnabled()) {
-                logger.debug("Reduced metrics:" + allMetrics);
-                logger.debug("Reduces adjacency:" + adjacencyList);
-            }
-            amos.collect("metrics",reporter,Metrics.getClassSchema(),allMetrics);
-            amos.collect("adjacency",reporter,AdjacencyList.getClassSchema(),adjacencyList);
+
+            amos.collect("metrics", reporter, Metrics.getClassSchema(), allMetrics);
+            amos.collect("adjacency", reporter, AdjacencyList.getClassSchema(), adjacencyList);
         }
 
     }
 
     public int run(String[] args) throws Exception {
 
-        logger.debug("Starting CombinedRunner...");
+        LOGGER.debug("Starting NetflowV5ToAvroCombinedRunner...");
 
-        JobConf conf = new JobConf(getConf(), CombinedRunner.class);
+        JobConf conf = new JobConf(getConf(), NetflowV5ToAvroCombinedRunner.class);
 
-        conf.setJobName("CombinedRunner");
+        conf.setJobName("NetflowV5ToAvroCombinedRunner");
+        conf.setInputFormat(NetflowV5FileReaderInputFormat.class);
 
-        FileInputFormat.setInputPaths(conf, new Path("input"));
-        FileOutputFormat.setOutputPath(conf, new Path("output"));
+        FileInputFormat.setInputPaths(conf, new Path(args[0]));
+        FileOutputFormat.setOutputPath(conf, new Path(args[1]));
 
+        AvroMultipleOutputs.addNamedOutput(conf, "flow", AvroOutputFormat.class, Flow.getClassSchema());
         AvroMultipleOutputs.addNamedOutput(conf, "metrics", AvroOutputFormat.class, Metrics.getClassSchema());
         AvroMultipleOutputs.addNamedOutput(conf, "adjacency", AvroOutputFormat.class, AdjacencyList.getClassSchema());
 
-        AvroJob.setMapperClass(conf, CombinedMapper.class);
-        AvroJob.setReducerClass(conf, CombinedReducer.class);
+        AvroJob.setMapperClass(conf, Mapper.class);
+        AvroJob.setReducerClass(conf, Reducer.class);
 
         AvroJob.setInputSchema(conf, Flow.getClassSchema());
         AvroJob.setOutputSchema(conf,
@@ -115,7 +125,7 @@ public class CombinedRunner extends Configured implements Tool {
                 CombinedData.getClassSchema()));
 
         JobClient.runJob(conf);
-        logger.debug("Done CombinedRunner!");
+        LOGGER.debug("Done NetflowV5ToAvroCombinedRunner!");
 
         return 0;
     }
