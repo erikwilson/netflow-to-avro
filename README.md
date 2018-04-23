@@ -2,11 +2,11 @@
 # netflow-to-avro
 
 This project will process a directory containing Netflow files in hadoop and output the
-associated flow, metrics, and adjacency data. This is accomplished by creating an
+associated flow, metrics, and adjacency files. This is accomplished by creating an
 avro.hadoop.mapred NetflowV5 to flow reader, outputting flow data in the map stage, while
 reducing metrics and adjacency information at the same time. In this way we can read
-and convert relevant Netflow data once in a parallel manner, then use a single map/reduce
-event to record our three Avro files.
+and convert relevant Netflow data once in a parallel manner, then use one map/reduce
+event to compute and output our three Avro data-sets in parallel.
 
 ## Building and Running
 
