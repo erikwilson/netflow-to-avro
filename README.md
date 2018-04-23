@@ -18,13 +18,13 @@ Netflow files are read from the `./input` directory. Flow, metrics, and adjacenc
 are written to the `./output` directory.
 
 Correct operation may require `<classifier>hadoop1</classifier>` being removed from `pom.xml`.
-This project was tested on OSX with brew installed hadoop services.
+This project was tested on OSX with brew installed hadoop.
 
 Files can be converted to a human readable format by using the `avroToJson.sh` command:
 ```
 ./avroToJson.sh ./output/flow-m-00000.avro >flow.json
-./avroToJson.sh ./output/adjacency-r-00000.avro >adjacency.json
 ./avroToJson.sh ./output/metrics-r-00000.avro >metrics.json
+./avroToJson.sh ./output/adjacency-r-00000.avro >adjacency.json
 ```
 
 ## Other
