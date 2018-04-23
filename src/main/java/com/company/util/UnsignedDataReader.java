@@ -2,22 +2,28 @@ package com.company.util;
 
 import java.nio.ByteBuffer;
 
-public class UnsignedDataReader {
+class UnsignedDataReader
+{
+    private ByteBuffer buffer;
 
-    private ByteBuffer byteBuffer;
-
-    public UnsignedDataReader(ByteBuffer byteBuffer) {
-        this.byteBuffer = byteBuffer;
+    UnsignedDataReader( ByteBuffer buffer )
+    {
+        this.buffer = buffer;
     }
 
-    public int getUnsignedByte() { return (byteBuffer.get() & 0xff); }
-
-    public int getUnsignedShort() {
-        return (byteBuffer.getShort() & 0xffff);
+    // should return short, but to satisfy avro data use int for now
+    int getUnsignedByte()
+    {
+        return (buffer.get() & 0xff);
     }
 
-    public long getUnsignedInt() {
-        return ((long) byteBuffer.getInt() & 0xffffffffL);
+    int getUnsignedShort()
+    {
+        return (buffer.getShort() & 0xffff);
     }
 
+    long getUnsignedInt()
+    {
+        return ((long) buffer.getInt() & 0xffffffffL);
+    }
 }

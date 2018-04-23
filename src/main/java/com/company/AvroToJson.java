@@ -6,25 +6,29 @@ import org.apache.avro.generic.GenericRecord;
 
 import java.io.File;
 
-public class AvroToJson {
-    public static void main(String[] args) throws Exception {
+public class AvroToJson
+{
+    public static void main( String[] args ) throws Exception
+    {
+        File inputFile = new File( args[ 0 ] );
+        DataFileReader< GenericRecord > reader = new DataFileReader<>( inputFile, new GenericDatumReader<>() );
 
-        String inFile = args[0];
-        File file = new File(inFile);
+        System.out.println( "[" );
 
-        DataFileReader<GenericRecord> reader =
-                new DataFileReader<>(file, new GenericDatumReader<>());
+        while ( reader.hasNext() )
+        {
+            System.out.print( "  " + reader.next() );
 
-        System.out.println("[");
-        while (reader.hasNext()) {
-            System.out.print("  " + reader.next());
-            if (reader.hasNext()) {
-                System.out.println(",");
-            } else {
+            if ( reader.hasNext() )
+            {
+                System.out.println( "," );
+            }
+            else
+            {
                 System.out.println();
             }
         }
-        System.out.println("]");
 
+        System.out.println( "]" );
     }
 }

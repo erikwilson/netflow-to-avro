@@ -12,11 +12,12 @@ import org.slf4j.LoggerFactory;
  */
 public class NetflowV5ToAvro
 {
-    private final static Logger LOGGER = LoggerFactory.getLogger(NetflowV5ToAvroCombinedRunner.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger( NetflowV5ToAvroCombinedRunner.class );
 
-    public static void main(String[] args) throws Exception {
-        LOGGER.debug("Running Netflow-to-Avro! args:" + String.join(" ",args));
-        int exitCode = ToolRunner.run(new Configuration(), new NetflowV5ToAvroCombinedRunner(), args);
-        System.exit(exitCode);
+    public static void main( String[] args ) throws Exception
+    {
+        LOGGER.debug( "Running Netflow-to-Avro! args:" + String.join( " ", args ) );
+        int exitCode = ToolRunner.run( new Configuration(), new NetflowV5ToAvroCombinedRunner(), args );
+        System.exit( exitCode );
     }
 }

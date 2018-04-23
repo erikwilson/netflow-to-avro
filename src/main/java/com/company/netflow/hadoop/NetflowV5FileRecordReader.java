@@ -7,12 +7,14 @@ import org.apache.hadoop.mapred.JobConf;
 
 import java.io.IOException;
 
-public class NetflowV5FileRecordReader extends AvroRecordReader<Flow> {
+@SuppressWarnings("WeakerAccess")
+public class NetflowV5FileRecordReader extends AvroRecordReader< Flow >
+{
 
-    public NetflowV5FileRecordReader(JobConf job, FileSplit split)
+    public NetflowV5FileRecordReader( JobConf job, FileSplit split )
             throws IOException
     {
-        super(new NetflowV5FileReader(split.getPath().toUri(), job), split);
+        super( new NetflowV5FileReader( split.getPath().toUri(), job ), split );
     }
 
 }

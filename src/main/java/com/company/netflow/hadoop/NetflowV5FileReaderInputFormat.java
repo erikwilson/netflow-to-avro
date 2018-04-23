@@ -7,13 +7,14 @@ import org.apache.hadoop.mapred.*;
 
 import java.io.IOException;
 
-public class NetflowV5FileReaderInputFormat extends FileInputFormat<AvroWrapper<Flow>, NullWritable> {
+public class NetflowV5FileReaderInputFormat extends FileInputFormat< AvroWrapper< Flow >, NullWritable >
+{
     @Override
     public NetflowV5FileRecordReader getRecordReader(
             InputSplit inputSplit, JobConf jobConf,
-            Reporter reporter) throws IOException
+            Reporter reporter ) throws IOException
     {
-        reporter.setStatus(inputSplit.toString());
-        return new NetflowV5FileRecordReader(jobConf, (FileSplit) inputSplit);
+        reporter.setStatus( inputSplit.toString() );
+        return new NetflowV5FileRecordReader( jobConf, (FileSplit)inputSplit );
     }
 }
