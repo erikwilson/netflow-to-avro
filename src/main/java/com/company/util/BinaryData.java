@@ -11,7 +11,7 @@ public class BinaryData {
 
     protected Map<String,Object> packetData;
     protected List<Map.Entry<String,DataTypes>> entryList;
-    protected Map<String,Serializer> serializers;
+    protected Map<String,Serializer> serializers = new HashMap<>();
     protected byte[] data;
 
     public int entryLength;
@@ -21,7 +21,6 @@ public class BinaryData {
     }
 
     public BinaryData(int entryLength, List<Map.Entry<String,DataTypes>> entryList) {
-        this.serializers = new HashMap<>();
         this.init(entryLength, entryList);
     }
 
@@ -89,7 +88,7 @@ public class BinaryData {
             (result, entry) -> {
                 String key = entry.getKey();
                 Object value = entry.getValue();
-                Serializer serial = serializers != null ? serializers.get(key) : null;
+                Serializer serial = serializers.get(key);
                 if (serial != null) {
                     result.add(serial.toString(value));
                 }
