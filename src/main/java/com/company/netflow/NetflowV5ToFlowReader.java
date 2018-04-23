@@ -42,6 +42,7 @@ public class NetflowV5ToFlowReader implements Iterator< Flow >
                 {
                     packet.read( input );
                     packet.toAvroFlow( flow );
+                    // flow timestamp is populated from last seen netflow header "unixSecs" timestamp
                     flow.setTimestamp( lastTimestamp );
                     packetCount -= 1;
                     totalCount += 1;
