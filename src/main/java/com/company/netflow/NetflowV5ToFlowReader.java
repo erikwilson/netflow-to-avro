@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class NetflowV5Reader implements Iterator< Flow >
+public class NetflowV5ToFlowReader implements Iterator< Flow >
 {
-    private final static Logger LOGGER = LoggerFactory.getLogger( com.company.netflow.NetflowV5Reader.class );
+    private final static Logger LOGGER = LoggerFactory.getLogger( NetflowV5ToFlowReader.class );
 
     protected PushbackInputStream input;
     private int packetCount = 0;

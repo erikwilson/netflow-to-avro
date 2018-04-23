@@ -1,6 +1,6 @@
 package com.company.netflow.hadoop;
 
-import com.company.netflow.NetflowV5Reader;
+import com.company.netflow.NetflowV5ToFlowReader;
 import com.fakecompany.flow.Flow;
 import org.apache.avro.Schema;
 import org.apache.avro.file.FileReader;
@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.PushbackInputStream;
 import java.net.URI;
 
-public class NetflowV5FileReader extends NetflowV5Reader implements FileReader< Flow >
+public class NetflowV5FileReader extends NetflowV5ToFlowReader implements FileReader< Flow >
 {
     private final static Logger LOGGER = LoggerFactory.getLogger( NetflowV5FileReader.class );
 
