@@ -20,11 +20,11 @@ public class BinaryDataTest
     {
         private UnsignedBinaryTypesReader()
         {
-            super(7, new ArrayList<>(Arrays.asList(
+            super(7, Arrays.asList(
                 Map.entry("byte", DataTypes.UINT8),   // 0
                 Map.entry("short", DataTypes.UINT16), // 1-2
                 Map.entry("int", DataTypes.UINT32)    // 3-6
-            )));
+            ) );
         }
     }
 

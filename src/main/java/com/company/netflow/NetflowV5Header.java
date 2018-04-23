@@ -12,7 +12,7 @@ public class NetflowV5Header extends BinaryData
 
     public NetflowV5Header()
     {
-        super(24, new ArrayList<>( Arrays.asList(
+        super(24, Arrays.asList(
             Map.entry( "version", DataTypes.UINT16 ),          // 0-1
             Map.entry( "count", DataTypes.UINT16 ),            // 2-3
             Map.entry( "sysUptime", DataTypes.UINT32 ),        // 4-7
@@ -22,7 +22,7 @@ public class NetflowV5Header extends BinaryData
             Map.entry( "engineType", DataTypes.UINT8 ),        // 20
             Map.entry( "engineId", DataTypes.UINT8 ),          // 21
             Map.entry( "samplingInterval", DataTypes.UINT16 )  // 22-23
-        ) ) );
+        ) );
     }
 
     @Override

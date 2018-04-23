@@ -13,7 +13,7 @@ public class NetflowV5Packet extends BinaryData
 
     public NetflowV5Packet()
     {
-        super(48, new ArrayList<>( Arrays.asList(
+        super(48, Arrays.asList(
             Map.entry( "srcAddr", DataTypes.UINT32 ),     // 0-3
             Map.entry( "dstAddr", DataTypes.UINT32 ),     // 4-7
             Map.entry( "nexthop", DataTypes.UINT32 ),     // 8-11
@@ -33,7 +33,7 @@ public class NetflowV5Packet extends BinaryData
             Map.entry( "dstAS", DataTypes.UINT16 ),       // 42-43
             Map.entry( "srcMask", DataTypes.UINT8 ),      // 44
             Map.entry( "dstMask", DataTypes.UINT8 ),      // 45
-            Map.entry( "pad2", DataTypes.UINT16 ) )       // 46-47
+            Map.entry( "pad2", DataTypes.UINT16 )         // 46-47
         ),
         new HashMap<>(){{
             put( "srcAddr", addr -> Util.addressToString( (long)addr ) );
